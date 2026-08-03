@@ -8,6 +8,9 @@ import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 
 const Layout0 = React.lazy(() => import('@/app/layout'));
 const Page0 = React.lazy(() => import('@/app/page'));
+const Page1 = React.lazy(() => import('@/app/ads'));
+const Page2 = React.lazy(() => import('@/app/edu'));
+const Page3 = React.lazy(() => import('@/app/digital'));
 
 // ─── Error Boundary ───────────────────────────────────────────────────────────
 
@@ -253,8 +256,11 @@ export default function App() {
   return (
     <BrowserRouter basename={"/"}>
       <Routes>
-        <Route element={<><TitleSetter title={"Bini.js App"} /><Suspense fallback={<Spinner />}><ErrorBoundary><Layout0><Outlet /></Layout0></ErrorBoundary></Suspense></>}>
+        <Route element={<><TitleSetter title={"Nexgen Group"} /><Suspense fallback={<Spinner />}><ErrorBoundary><Layout0><Outlet /></Layout0></ErrorBoundary></Suspense></>}>
           <Route path="/" element={<Suspense fallback={<Spinner />}><ErrorBoundary><Page0 /></ErrorBoundary></Suspense>} />
+          <Route path="/ads" element={<Suspense fallback={<Spinner />}><ErrorBoundary><Page1 /></ErrorBoundary></Suspense>} />
+          <Route path="/edu" element={<Suspense fallback={<Spinner />}><ErrorBoundary><Page2 /></ErrorBoundary></Suspense>} />
+          <Route path="/digital" element={<Suspense fallback={<Spinner />}><ErrorBoundary><Page3 /></ErrorBoundary></Suspense>} />
         </Route>
         <Route path="*" element={<Default404 />} />
       </Routes>
