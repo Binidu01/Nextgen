@@ -1,4 +1,4 @@
-# my-bini-app
+# nexgen
 
 A **Bini.js** application — build full-stack React applications for **web, desktop, and mobile** using a single unified development experience.
 
@@ -43,12 +43,12 @@ Powered by **Bini.js**, **Vite**, **Hono**, and **Tauri**.
 
 | Command | Description |
 |---|---|
-| `pnpm run dev` | Start the Vite development server with HMR |
-| `pnpm run build` | Type-check and build the production application |
-| `pnpm start` | Serve production output using bini-server |
-| `pnpm run export` | Export the application as a static SPA |
-| `pnpm run preview` | Preview the production build |
-| `pnpm run deploy` | Deploy the application to your chosen platform |
+| `npm run dev` | Start the Vite development server with HMR |
+| `npm run build` | Type-check and build the production application |
+| `npm start` | Serve production output using bini-server |
+| `npm run export` | Export the application as a static SPA |
+| `npm run preview` | Preview the production build |
+| `npm run deploy` | Deploy the application to your chosen platform |
 
 `start` and `export` are available only for web-target projects.
 
@@ -81,10 +81,10 @@ No native SDKs, platform toolchains, or signing setup required.
 
 | Command | Description |
 |---|---|
-| `pnpm run tauri:dev` | Start the application in development mode |
-| `pnpm run tauri:build` | Build a distributable Windows application |
-| `pnpm run tauri:icon` | Generate application icons from `public/logo.png` |
-| `pnpm run deploy` | Deploy the Windows application (build + sign + distribute) |
+| `npm run tauri:dev` | Start the application in development mode |
+| `npm run tauri:build` | Build a distributable Windows application |
+| `npm run tauri:icon` | Generate application icons from `public/logo.png` |
+| `npm run deploy` | Deploy the Windows application (build + sign + distribute) |
 
 ## Requirements
 
@@ -127,10 +127,10 @@ cl
 
 | Command | Description |
 |---|---|
-| `pnpm run tauri:dev` | Start the application in development mode |
-| `pnpm run tauri:build` | Build a distributable macOS application |
-| `pnpm run tauri:icon` | Generate application icons from `public/logo.png` |
-| `pnpm run deploy` | Deploy the macOS application (build + sign + notarize + distribute) |
+| `npm run tauri:dev` | Start the application in development mode |
+| `npm run tauri:build` | Build a distributable macOS application |
+| `npm run tauri:icon` | Generate application icons from `public/logo.png` |
+| `npm run deploy` | Deploy the macOS application (build + sign + notarize + distribute) |
 
 ## Requirements
 
@@ -171,10 +171,10 @@ brew install gtk+3 webkit2gtk pkg-config
 
 | Command | Description |
 |---|---|
-| `pnpm run tauri:dev` | Start the application in development mode |
-| `pnpm run tauri:build` | Build Linux binaries/AppImage |
-| `pnpm run tauri:icon` | Generate application icons from `public/logo.png` |
-| `pnpm run deploy` | Deploy the Linux application (build + package + distribute) |
+| `npm run tauri:dev` | Start the application in development mode |
+| `npm run tauri:build` | Build Linux binaries/AppImage |
+| `npm run tauri:icon` | Generate application icons from `public/logo.png` |
+| `npm run deploy` | Deploy the Linux application (build + package + distribute) |
 
 ## Requirements
 
@@ -251,11 +251,11 @@ src-tauri/gen/android
 
 | Command | Description |
 |---|---|
-| `pnpm run android` | Run on a connected Android emulator or device |
-| `pnpm run android:build` | Build a release APK/AAB |
-| `pnpm run deploy` | Deploy the Android app (build + sign + distribute to stores) |
-| `pnpm run tauri -- android dev` | Manual equivalent of `pnpm run android` |
-| `pnpm run tauri -- android build` | Manual equivalent of `pnpm run android:build` |
+| `npm run android` | Run on a connected Android emulator or device |
+| `npm run android:build` | Build a release APK/AAB |
+| `npm run deploy` | Deploy the Android app (build + sign + distribute to stores) |
+| `npm run tauri -- android dev` | Manual equivalent of `npm run android` |
+| `npm run tauri -- android build` | Manual equivalent of `npm run android:build` |
 
 ## Requirements
 
@@ -303,11 +303,11 @@ Windows and Linux cannot generate iOS applications.
 
 | Command | Description |
 |---|---|
-| `pnpm run ios` | Run on the iOS Simulator or a connected device |
-| `pnpm run ios:build` | Build the iOS application |
-| `pnpm run deploy` | Deploy the iOS app (build + sign + distribute to TestFlight/App Store) |
-| `pnpm run tauri -- ios dev` | Manual equivalent of `pnpm run ios` |
-| `pnpm run tauri -- ios build` | Manual equivalent of `pnpm run ios:build` |
+| `npm run ios` | Run on the iOS Simulator or a connected device |
+| `npm run ios:build` | Build the iOS application |
+| `npm run deploy` | Deploy the iOS app (build + sign + distribute to TestFlight/App Store) |
+| `npm run tauri -- ios dev` | Manual equivalent of `npm run ios` |
+| `npm run tauri -- ios build` | Manual equivalent of `npm run ios:build` |
 
 ## Requirements
 
@@ -385,12 +385,12 @@ The `deploy` command handles the entire release process for your target platform
 
 | Platform | Deploy Command | What it does |
 |---|---|---|
-| Web | `pnpm run deploy` | Builds and deploys to your configured hosting platform (Vercel, Netlify, Cloudflare, etc.) |
-| Windows | `pnpm run deploy` | Builds, signs with Authenticode, and prepares the Windows installer |
-| macOS | `pnpm run deploy` | Builds, signs with Developer ID, notarizes with Apple, and prepares the DMG |
-| Linux | `pnpm run deploy` | Builds the AppImage/DEB/RPM and prepares for distribution |
-| Android | `pnpm run deploy` | Builds a signed APK/AAB and prepares for Play Store distribution |
-| iOS | `pnpm run deploy` | Builds, signs, and prepares for TestFlight/App Store distribution |
+| Web | `npm run deploy` | Builds and deploys to your configured hosting platform (Vercel, Netlify, Cloudflare, etc.) |
+| Windows | `npm run deploy` | Builds, signs with Authenticode, and prepares the Windows installer |
+| macOS | `npm run deploy` | Builds, signs with Developer ID, notarizes with Apple, and prepares the DMG |
+| Linux | `npm run deploy` | Builds the AppImage/DEB/RPM and prepares for distribution |
+| Android | `npm run deploy` | Builds a signed APK/AAB and prepares for Play Store distribution |
+| iOS | `npm run deploy` | Builds, signs, and prepares for TestFlight/App Store distribution |
 
 Configuration for deployment is managed through:
 - `bini-deploy` package
