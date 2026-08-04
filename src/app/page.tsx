@@ -836,7 +836,7 @@ export default function NexGenPage() {
   return (
     <>
       <div ref={containerRef} className="relative bg-[#0a0a0b]" style={{ height: '550dvh' }}>
-        <div className={`sticky top-0 flex items-center justify-center overflow-hidden px-4 sm:px-6`} style={{ height: '100dvh', maxHeight: '-webkit-fill-available' }}>
+        <div className={`sticky top-0 flex items-center justify-center overflow-hidden px-3 sm:px-6`} style={{ height: '100dvh', maxHeight: '-webkit-fill-available' }}>
           
           {/* Background effects */}
           {!isHero && !isCTA && (
@@ -863,30 +863,30 @@ export default function NexGenPage() {
           <div className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ${
             isHero ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
           }`}>
-            <div className="text-center max-w-6xl mx-auto px-4 sm:px-6 w-full pb-safe-bottom">
-              {/* NXG Group Brand - Fixed for mobile */}
-              <div className="mb-8 sm:mb-12">
-                <div className="inline-flex items-center gap-3 mb-4">
-                  <div className="w-8 sm:w-12 h-px bg-white/20" />
-                  <span className="text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-[0.3em]">
+            <div className="text-center max-w-6xl mx-auto px-3 sm:px-6 w-full pb-safe-bottom">
+              {/* NXG Group Brand */}
+              <div className="mb-6 sm:mb-8 md:mb-12">
+                <div className="inline-flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                  <div className="w-6 sm:w-12 h-px bg-white/20" />
+                  <span className="text-[8px] sm:text-xs font-medium text-gray-500 uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                     NexGen Group of Company
                   </span>
-                  <div className="w-8 sm:w-12 h-px bg-white/20" />
+                  <div className="w-6 sm:w-12 h-px bg-white/20" />
                 </div>
                 
-                <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-bold text-white mb-4 leading-none tracking-tighter flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+                <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-9xl font-bold text-white mb-3 sm:mb-4 leading-none tracking-tighter flex flex-wrap items-center justify-center gap-x-1 sm:gap-x-2 gap-y-1">
                   <span>NXG</span>
                   <span className="text-gray-600 font-light">GROUP</span>
                 </h1>
                 
-                <p className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mt-4 px-2">
+                <p className="text-gray-400 text-[10px] sm:text-sm md:text-lg max-w-2xl mx-auto leading-relaxed mt-2 sm:mt-4 px-2">
                   Three specialized divisions, one unified mission delivering 
                   exceptional digital solutions that transform businesses and empower individuals.
                 </p>
               </div>
 
-              {/* 3 Company Cards - Reveal on scroll */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 max-w-4xl mx-auto mt-8 sm:mt-12">
+              {/* 3 Company Cards - Mobile optimized */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 lg:gap-6 max-w-4xl mx-auto mt-4 sm:mt-8 md:mt-12">
                 {companyCards.map((company, index) => {
                   const style = getCardStyle(index)
                   
@@ -894,7 +894,7 @@ export default function NexGenPage() {
                     <Link
                       key={company.id}
                       to={`/${company.id}`}
-                      className="group relative bg-[#0a0a0b] border border-white/[0.06] rounded-2xl p-5 sm:p-6 lg:p-8 transition-all duration-700 hover:border-white/[0.15]"
+                      className="group relative bg-[#0a0a0b] border border-white/[0.06] rounded-xl sm:rounded-2xl p-3.5 sm:p-6 lg:p-8 transition-all duration-700 hover:border-white/[0.15]"
                       style={{
                         ...style,
                         transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -902,7 +902,7 @@ export default function NexGenPage() {
                     >
                       {/* Hover glow effect */}
                       <div 
-                        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                        className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                         style={{
                           background: `radial-gradient(circle at center, ${company.color}10 0%, transparent 70%)`,
                         }}
@@ -911,7 +911,7 @@ export default function NexGenPage() {
                       <div className="relative z-10">
                         {/* Icon */}
                         <div 
-                          className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-3 sm:mb-4 transition-all duration-500 group-hover:scale-110"
+                          className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-2 sm:mb-4 transition-all duration-500 group-hover:scale-110"
                           style={{ 
                             backgroundColor: `${company.color}15`,
                             color: company.color,
@@ -921,28 +921,28 @@ export default function NexGenPage() {
                         </div>
                         
                         {/* Company Name */}
-                        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1 sm:mb-2 transition-colors duration-300">
+                        <h3 className="text-sm sm:text-xl lg:text-2xl font-bold text-white mb-0.5 sm:mb-2 transition-colors duration-300">
                           {company.name}
                         </h3>
                         
                         {/* Tagline */}
-                        <p className="text-xs sm:text-sm font-medium mb-2 transition-colors duration-300"
+                        <p className="text-[9px] sm:text-sm font-medium mb-1 sm:mb-2 transition-colors duration-300"
                           style={{ color: company.color }}
                         >
                           {company.tagline}
                         </p>
                         
-                        {/* Description */}
-                        <p className="text-gray-500 text-xs sm:text-sm leading-relaxed mb-4">
+                        {/* Description - shorter on mobile */}
+                        <p className="text-gray-500 text-[9px] sm:text-sm leading-relaxed mb-2 sm:mb-4 line-clamp-2 sm:line-clamp-none">
                           {company.description}
                         </p>
                         
                         {/* Arrow indicator */}
-                        <div className="flex items-center gap-2 text-xs sm:text-sm font-medium transition-all duration-300 opacity-50 group-hover:opacity-100"
+                        <div className="flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-sm font-medium transition-all duration-300 opacity-50 group-hover:opacity-100"
                           style={{ color: company.color }}
                         >
                           <span>Explore</span>
-                          <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" />
+                          <ArrowRight className="w-2.5 h-2.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" />
                         </div>
                       </div>
                     </Link>
@@ -951,7 +951,7 @@ export default function NexGenPage() {
               </div>
 
               {/* Progress indicator dots */}
-              <div className="flex items-center justify-center gap-2 mt-8 sm:mt-12">
+              <div className="flex items-center justify-center gap-2 mt-6 sm:mt-8 md:mt-12">
                 {companyCards.map((company, index) => {
                   const cardStart = index * 0.25
                   const cardEnd = cardStart + 0.25
@@ -963,8 +963,8 @@ export default function NexGenPage() {
                       key={index}
                       className="transition-all duration-500 rounded-full"
                       style={{
-                        width: isRevealed ? (isFullyRevealed ? '24px' : '16px') : '6px',
-                        height: '6px',
+                        width: isRevealed ? (isFullyRevealed ? '16px sm:24px' : '10px sm:16px') : '4px sm:6px',
+                        height: '4px sm:6px',
                         backgroundColor: isRevealed ? company.color : '#333',
                         opacity: isRevealed ? 1 : 0.4,
                       }}
@@ -974,29 +974,27 @@ export default function NexGenPage() {
               </div>
             </div>
 
-            {/* Scroll Indicator - Animated arrow bouncing down */}
+            {/* Scroll Indicator */}
             <div 
-              className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 transition-all duration-700"
+              className="absolute bottom-4 sm:bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 sm:gap-3 transition-all duration-700"
               style={{
                 opacity: heroProgress > 0.8 ? 0 : 1,
                 transform: `translateY(${heroProgress > 0.8 ? 20 : 0}px)`,
                 paddingBottom: 'env(safe-area-inset-bottom)',
               }}
             >
-              <span className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-[0.2em]">
+              <span className="text-[7px] sm:text-[10px] text-gray-500 uppercase tracking-[0.15em] sm:tracking-[0.2em]">
                 Scroll to explore
               </span>
               
-              {/* Animated scroll indicator */}
-              <div className="relative w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-b from-emerald-400 to-sky-400 animate-scroll-bounce" />
+              <div className="relative w-5 h-8 sm:w-6 sm:h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-1 sm:p-1.5">
+                <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-gradient-to-b from-emerald-400 to-sky-400 animate-scroll-bounce" />
               </div>
               
-              {/* Animated chevron arrows */}
               <div className="flex flex-col items-center gap-0">
-                <ChevronDown className="w-4 h-4 text-gray-600 animate-chevron-1" />
-                <ChevronDown className="w-4 h-4 text-gray-600 -mt-2 animate-chevron-2" />
-                <ChevronDown className="w-4 h-4 text-gray-600 -mt-2 animate-chevron-3" />
+                <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600 animate-chevron-1" />
+                <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600 -mt-1.5 sm:-mt-2 animate-chevron-2" />
+                <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600 -mt-1.5 sm:-mt-2 animate-chevron-3" />
               </div>
             </div>
           </div>
@@ -1106,17 +1104,17 @@ export default function NexGenPage() {
           <div className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ${
             isCTA ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
           }`}>
-            <div className="text-center max-w-4xl mx-auto px-4 sm:px-6 w-full pb-safe-bottom">
-              <div className="mb-8 sm:mb-12">
-                <div className="inline-flex items-center gap-3 mb-4">
-                  <div className="w-8 sm:w-12 h-px bg-white/20" />
-                  <span className="text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-[0.3em]">
+            <div className="text-center max-w-4xl mx-auto px-3 sm:px-6 w-full pb-safe-bottom">
+              <div className="mb-6 sm:mb-12">
+                <div className="inline-flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                  <div className="w-6 sm:w-12 h-px bg-white/20" />
+                  <span className="text-[8px] sm:text-xs font-medium text-gray-500 uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                     Let's Collaborate
                   </span>
-                  <div className="w-8 sm:w-12 h-px bg-white/20" />
+                  <div className="w-6 sm:w-12 h-px bg-white/20" />
                 </div>
                 
-                <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-4 leading-none tracking-tighter">
+                <h2 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-3 sm:mb-4 leading-none tracking-tighter">
                   Ready to build
                   <br />
                   <span className="bg-gradient-to-r from-emerald-400 via-violet-400 to-sky-400 bg-clip-text text-transparent">
@@ -1124,24 +1122,24 @@ export default function NexGenPage() {
                   </span>
                 </h2>
                 
-                <p className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mt-4">
+                <p className="text-gray-400 text-[10px] sm:text-sm md:text-lg max-w-2xl mx-auto leading-relaxed mt-2 sm:mt-4 px-2">
                   Tell us about your project and we'll get back to you within 24 hours 
                   with a tailored strategy for your success.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 max-w-4xl mx-auto mt-8 sm:mt-12">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 lg:gap-6 max-w-4xl mx-auto mt-4 sm:mt-12">
                 {companyCards.map((company) => (
                   <Link
                     key={company.id}
                     to={`/${company.id}`}
-                    className="group relative bg-[#0a0a0b] border border-white/[0.06] rounded-2xl p-5 sm:p-6 lg:p-8 transition-all duration-500 hover:border-white/[0.15] hover:scale-[1.02] hover:shadow-2xl"
+                    className="group relative bg-[#0a0a0b] border border-white/[0.06] rounded-xl sm:rounded-2xl p-3.5 sm:p-6 lg:p-8 transition-all duration-500 hover:border-white/[0.15] hover:scale-[1.02] hover:shadow-2xl"
                     style={{
                       boxShadow: `0 0 40px ${company.color}05`,
                     }}
                   >
                     <div 
-                      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                       style={{
                         background: `radial-gradient(circle at center, ${company.color}10 0%, transparent 70%)`,
                       }}
@@ -1149,7 +1147,7 @@ export default function NexGenPage() {
                     
                     <div className="relative z-10 text-center">
                       <div 
-                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center mb-3 sm:mb-4 mx-auto transition-all duration-500 group-hover:scale-110"
+                        className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center mb-2 sm:mb-4 mx-auto transition-all duration-500 group-hover:scale-110"
                         style={{ 
                           backgroundColor: `${company.color}15`,
                           color: company.color,
@@ -1158,17 +1156,17 @@ export default function NexGenPage() {
                         {company.icon}
                       </div>
                       
-                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1 sm:mb-2">
+                      <h3 className="text-sm sm:text-xl lg:text-2xl font-bold text-white mb-0.5 sm:mb-2">
                         {company.name}
                       </h3>
                       
-                      <p className="text-xs sm:text-sm font-medium mb-4"
+                      <p className="text-[9px] sm:text-sm font-medium mb-2 sm:mb-4"
                         style={{ color: company.color }}
                       >
                         {company.tagline}
                       </p>
                       
-                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 group-hover:scale-105"
+                      <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[9px] sm:text-sm font-medium transition-all duration-300 group-hover:scale-105"
                         style={{ 
                           backgroundColor: `${company.color}20`,
                           color: company.color,
@@ -1271,6 +1269,13 @@ export default function NexGenPage() {
           [style*="height: 100dvh"] {
             height: -webkit-fill-available;
           }
+        }
+
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
 
         .delay-500 {
