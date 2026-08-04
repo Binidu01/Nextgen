@@ -325,7 +325,7 @@ function GraduationCap(props: any) {
 }
 
 // ---------------------------------------------------------------------------
-// SECTION DATA - Updated "Next" to "Nex"
+// SECTION DATA
 // ---------------------------------------------------------------------------
 const sections: SectionData[] = [
   {
@@ -432,9 +432,9 @@ const sections: SectionData[] = [
     textColor: 'text-sky-400',
     background: 'radial-gradient(circle at 50% 80%, rgba(14, 165, 233, 0.15) 0%, transparent 50%)',
     metrics: [
-      { value: '1,000+', label: 'Assignments Completed', target: 1000 },
+      { value: '450+', label: 'Assignments Completed', target: 450 },
       { value: '98.5%', label: 'Satisfaction Rate', target: 98.5 },
-      { value: '50+', label: 'Expert Tutors', target: 50 },
+      { value: '22+', label: 'Expert Tutors', target: 22 },
     ],
     steps: [
       {
@@ -469,13 +469,17 @@ const sections: SectionData[] = [
 ]
 
 // ---------------------------------------------------------------------------
-// HOOK: SCROLL-BASED ANIMATION
+// HOOK: SCROLL-BASED LOOP NAVIGATION
 // ---------------------------------------------------------------------------
-function useScrollProgress() {
-  const [phase, setPhase] = useState<'hero' | 'ads' | 'digital' | 'edu' | 'cta'>('hero')
+function useScrollNavigation() {
+  const [phase, setPhase] = useState<
+    'hero' | 'card1' | 'section1' | 'collapse1' | 'card2' | 'section2' | 'collapse2' | 'card3' | 'section3'
+  >('hero')
   const [activeStep, setActiveStep] = useState(-1)
-  const [heroProgress, setHeroProgress] = useState(0)
   const [progress, setProgress] = useState(0)
+  const [heroLoop, setHeroLoop] = useState(0)
+  const [heroProgress, setHeroProgress] = useState(0)
+  const [cardDisappearProgress, setCardDisappearProgress] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -483,6 +487,24 @@ function useScrollProgress() {
     if (!container) return
 
     const stepsPerSection = sections[0].steps.length
+
+    const B = {
+      hero0End: 0.08,
+      card1End: 0.16,
+      section1End: 0.36,
+      collapse1End: 0.42,
+      hero1End: 0.50,
+      card2End: 0.58,
+      section2End: 0.78,
+      collapse2End: 0.84,
+      hero2End: 0.90,
+      card3End: 0.94,
+    }
+
+    const reverseStep = (localProgress: number) => {
+      const stepsFromEnd = Math.floor(localProgress * (stepsPerSection + 1))
+      return Math.max(-1, stepsPerSection - 1 - stepsFromEnd)
+    }
 
     const handleScroll = () => {
       const rect = container.getBoundingClientRect()
@@ -493,27 +515,68 @@ function useScrollProgress() {
       const p = Math.max(0, Math.min(1, scrollOffset / totalScroll))
       setProgress(p)
 
-      // Hero phase progress (0 to 1 within first 10%)
-      if (p < 0.10) {
-        setPhase('hero')
-        setHeroProgress(p / 0.10) // 0 to 1 within hero phase
-        setActiveStep(-1)
-      } else if (p < 0.35) {
-        setPhase('ads')
-        setHeroProgress(1)
-        const sectionProgress = (p - 0.10) / 0.25
-        setActiveStep(Math.min(Math.floor(sectionProgress * stepsPerSection), stepsPerSection - 1))
-      } else if (p < 0.60) {
-        setPhase('digital')
-        const sectionProgress = (p - 0.35) / 0.25
-        setActiveStep(Math.min(Math.floor(sectionProgress * stepsPerSection), stepsPerSection - 1))
-      } else if (p < 0.85) {
-        setPhase('edu')
-        const sectionProgress = (p - 0.60) / 0.25
-        setActiveStep(Math.min(Math.floor(sectionProgress * stepsPerSection), stepsPerSection - 1))
+      // Calculate card disappear progress (0 to 1) within the card phase
+      if (p >= B.hero0End && p < B.card1End) {
+        const cardProgress = (p - B.hero0End) / (B.card1End - B.hero0End)
+        setCardDisappearProgress(cardProgress)
+      } else if (p >= B.collapse1End && p < B.hero1End) {
+        setCardDisappearProgress(0)
+      } else if (p >= B.hero1End && p < B.card2End) {
+        const cardProgress = (p - B.hero1End) / (B.card2End - B.hero1End)
+        setCardDisappearProgress(cardProgress)
+      } else if (p >= B.collapse2End && p < B.hero2End) {
+        setCardDisappearProgress(0)
+      } else if (p >= B.hero2End && p < B.card3End) {
+        const cardProgress = (p - B.hero2End) / (B.card3End - B.hero2End)
+        setCardDisappearProgress(cardProgress)
       } else {
-        setPhase('cta')
+        setCardDisappearProgress(0)
+      }
+
+      if (p < B.hero0End) {
+        setPhase('hero')
         setActiveStep(-1)
+        setHeroLoop(0)
+        setHeroProgress(p / B.hero0End)
+      } else if (p < B.card1End) {
+        setPhase('card1')
+        setActiveStep(-1)
+      } else if (p < B.section1End) {
+        setPhase('section1')
+        const stepProgress = (p - B.card1End) / (B.section1End - B.card1End)
+        setActiveStep(Math.min(Math.floor(stepProgress * stepsPerSection), stepsPerSection - 1))
+      } else if (p < B.collapse1End) {
+        setPhase('collapse1')
+        const collapseProgress = (p - B.section1End) / (B.collapse1End - B.section1End)
+        setActiveStep(reverseStep(collapseProgress))
+      } else if (p < B.hero1End) {
+        setPhase('hero')
+        setActiveStep(-1)
+        setHeroLoop(1)
+        setHeroProgress((p - B.collapse1End) / (B.hero1End - B.collapse1End))
+      } else if (p < B.card2End) {
+        setPhase('card2')
+        setActiveStep(-1)
+      } else if (p < B.section2End) {
+        setPhase('section2')
+        const stepProgress = (p - B.card2End) / (B.section2End - B.card2End)
+        setActiveStep(Math.min(Math.floor(stepProgress * stepsPerSection), stepsPerSection - 1))
+      } else if (p < B.collapse2End) {
+        setPhase('collapse2')
+        const collapseProgress = (p - B.section2End) / (B.collapse2End - B.section2End)
+        setActiveStep(reverseStep(collapseProgress))
+      } else if (p < B.hero2End) {
+        setPhase('hero')
+        setActiveStep(-1)
+        setHeroLoop(2)
+        setHeroProgress((p - B.collapse2End) / (B.hero2End - B.collapse2End))
+      } else if (p < B.card3End) {
+        setPhase('card3')
+        setActiveStep(-1)
+      } else {
+        setPhase('section3')
+        const stepProgress = (p - B.card3End) / (1 - B.card3End)
+        setActiveStep(Math.min(Math.floor(stepProgress * stepsPerSection), stepsPerSection - 1))
       }
     }
 
@@ -523,7 +586,7 @@ function useScrollProgress() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  return { phase, activeStep, progress, heroProgress, containerRef }
+  return { phase, activeStep, progress, heroLoop, heroProgress, cardDisappearProgress, containerRef }
 }
 
 // ---------------------------------------------------------------------------
@@ -611,7 +674,7 @@ function useInView(options = { threshold: 0.3, triggerOnce: true }) {
 }
 
 // ---------------------------------------------------------------------------
-// STEP COMPONENT - Mobile optimized version
+// STEP COMPONENT
 // ---------------------------------------------------------------------------
 function StepItem({ step, index, activeStep, color }: {
   step: Step
@@ -625,13 +688,12 @@ function StepItem({ step, index, activeStep, color }: {
 
   return (
     <>
-      {/* Desktop Version */}
       <div
         className={`hidden sm:flex group relative items-start gap-3 p-4 rounded-xl transition-all duration-700 ${
           isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
         } ${
           isActive 
-            ? 'bg-white/5 scale-[1.02] border-2 shadow-2xl' 
+            ? 'bg-white/5 border-2' 
             : isComplete 
               ? 'bg-white/[0.02] border border-white/[0.04]' 
               : 'border border-transparent'
@@ -681,7 +743,6 @@ function StepItem({ step, index, activeStep, color }: {
         </div>
       </div>
 
-      {/* Mobile Version - Compact without descriptions */}
       <div
         className={`flex sm:hidden items-center gap-2 p-2 rounded-lg transition-all duration-300 ${
           isActive 
@@ -728,12 +789,10 @@ function StepItem({ step, index, activeStep, color }: {
 // ---------------------------------------------------------------------------
 function MacBookScreen({ section, activeStep }: { section: SectionData; activeStep: number }) {
   const [rotation, setRotation] = useState(0)
-  const [scale, setScale] = useState(1)
 
   useEffect(() => {
     if (activeStep >= 0) {
       setRotation(activeStep * 1.5)
-      setScale(1 + (activeStep * 0.005))
     }
   }, [activeStep])
 
@@ -754,8 +813,8 @@ function MacBookScreen({ section, activeStep }: { section: SectionData; activeSt
     <div 
       className="relative w-full max-w-[280px] sm:max-w-sm mx-auto aspect-[16/10] transition-all duration-1000"
       style={{
-        transform: `perspective(1000px) rotateY(${rotation}deg) scale(${scale})`,
-        WebkitTransform: `perspective(1000px) rotateY(${rotation}deg) scale(${scale})`,
+        transform: `perspective(1000px) rotateY(${rotation}deg)`,
+        WebkitTransform: `perspective(1000px) rotateY(${rotation}deg)`,
       }}
     >
       <div className="relative w-full h-full bg-gradient-to-b from-[#1a1a1e] to-[#0a0a0b] rounded-xl border border-white/10 shadow-2xl overflow-hidden">
@@ -776,77 +835,160 @@ function MacBookScreen({ section, activeStep }: { section: SectionData; activeSt
 // MAIN PAGE
 // ---------------------------------------------------------------------------
 export default function NexGenPage() {
-  const { phase, activeStep, progress, heroProgress, containerRef } = useScrollProgress()
-  const currentSection = sections.find(s => s.id === phase) || sections[0]
-  const isHero = phase === 'hero'
-  const isCTA = phase === 'cta'
+  const { phase, activeStep, progress, heroLoop, heroProgress, cardDisappearProgress, containerRef } = useScrollNavigation()
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: false })
 
   const companyCards = [
     {
       id: 'ads',
       name: 'NexGen Ads',
-      tagline: 'Performance Marketing',
+      tagline: 'Performance Marketing That Drives Revenue',
       description: 'Data-driven campaigns across all major platforms optimized for measurable business growth and ROI.',
       color: '#10b981',
       icon: <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6" />,
+      section: sections[0],
     },
     {
       id: 'digital',
       name: 'NexGen Digital',
-      tagline: 'Software Development',
+      tagline: 'Enterprise-Grade Software Development',
       description: 'Production-ready web applications built with modern stack technologies and enterprise-grade security.',
       color: '#8b5cf6',
       icon: <Code2 className="w-5 h-5 sm:w-6 sm:h-6" />,
+      section: sections[1],
     },
     {
       id: 'edu',
       name: 'NexGen Edu',
-      tagline: 'Academic Excellence',
-      description: 'Expert guidance from subject matter specialists helping students achieve their educational goals.',
+      tagline: 'Academic Support That Gets Results',
+      description: 'Expert academic guidance from subject matter specialists helping students achieve their educational goals.',
       color: '#0ea5e9',
       icon: <BookOpen className="w-5 h-5 sm:w-6 sm:h-6" />,
+      section: sections[2],
     },
   ]
 
-  // Calculate card reveal animation based on heroProgress
+  const getCurrentSection = () => {
+    if (phase === 'section1' || phase === 'card1' || phase === 'collapse1') return sections[0]
+    if (phase === 'section2' || phase === 'card2' || phase === 'collapse2') return sections[1]
+    if (phase === 'section3' || phase === 'card3') return sections[2]
+    return sections[0]
+  }
+
+  const currentSection = getCurrentSection()
+  const isShowingSection =
+    phase === 'section1' ||
+    phase === 'section2' ||
+    phase === 'section3' ||
+    phase === 'collapse1' ||
+    phase === 'collapse2'
+  const isCollapsing = phase === 'collapse1' || phase === 'collapse2'
+  const collapseOpacity = isCollapsing ? Math.max(0, (activeStep + 1) / currentSection.steps.length) : 1
+  const isShowingCard = phase === 'card1' || phase === 'card2' || phase === 'card3'
+  const isHero = phase === 'hero'
+
+  const getActiveCardIndex = () => {
+    if (phase === 'card1' || phase === 'section1' || phase === 'collapse1') return 0
+    if (phase === 'card2' || phase === 'section2' || phase === 'collapse2') return 1
+    if (phase === 'card3' || phase === 'section3') return 2
+    return -1
+  }
+
+  const activeCardIndex = getActiveCardIndex()
+
+  // Calculate disappear effect values
+  const disappearProgress = isShowingCard ? cardDisappearProgress : 0
+  const easedDisappear = 1 - Math.pow(1 - disappearProgress, 2)
+  const blurAmount = easedDisappear * 4
+  const opacityAmount = 1 - easedDisappear * 0.4
+  const translateAmount = easedDisappear * 20
+
   const getCardStyle = (index: number) => {
-    const cardStart = index * 0.25 // Each card starts at 0%, 25%, 50% of hero progress
-    const cardDuration = 0.25 // Each card takes 25% of hero progress to fully reveal
-    
-    if (heroProgress < cardStart) {
+    if (isHero) {
+      const clampedProgress = Math.min(1, Math.max(0, heroProgress))
+
+      if (index === heroLoop) {
+        const eased = 1 - Math.pow(1 - clampedProgress, 3)
+        return {
+          opacity: eased,
+          transform: `translateY(${(1 - eased) * 40}px)`,
+          pointerEvents: eased > 0.5 ? 'auto' as const : 'none' as const,
+          borderColor: eased > 0.5 ? companyCards[index].color : 'transparent',
+          boxShadow: 'none',
+        }
+      }
+
+      if (index === heroLoop - 1) {
+        const easedOut = 1 - Math.pow(1 - clampedProgress, 3)
+        const remaining = 1 - easedOut
+        return {
+          opacity: remaining,
+          transform: `translateY(${(1 - remaining) * -30}px)`,
+          pointerEvents: 'none' as const,
+          borderColor: remaining > 0.5 ? companyCards[index].color : 'transparent',
+          boxShadow: 'none',
+        }
+      }
+
       return {
         opacity: 0,
-        transform: 'translateY(60px) scale(0.8)',
+        transform: 'translateY(40px)',
         pointerEvents: 'none' as const,
-        boxShadow: 'none',
       }
     }
-    
-    const cardProgress = Math.min(1, (heroProgress - cardStart) / cardDuration)
-    
+
+    if (isShowingCard) {
+      const isActive = index === activeCardIndex
+      
+      if (isActive) {
+        const translateY = easedDisappear * 80
+        const opacity = 1 - easedDisappear * 0.8
+        const scale = 1 - easedDisappear * 0.08
+        
+        return {
+          opacity: opacity,
+          transform: `translateY(${translateY}px) scale(${scale})`,
+          pointerEvents: opacity > 0.3 ? 'auto' as const : 'none' as const,
+          borderColor: isActive ? companyCards[index].color : 'transparent',
+          boxShadow: 'none',
+        }
+      }
+      
+      return {
+        opacity: 0,
+        transform: 'translateY(40px)',
+        pointerEvents: 'none' as const,
+      }
+    }
+
+    if (isShowingSection) {
+      return {
+        opacity: 0,
+        transform: 'translateY(-100px)',
+        pointerEvents: 'none' as const,
+      }
+    }
+
     return {
-      opacity: cardProgress,
-      transform: `translateY(${(1 - cardProgress) * 60}px) scale(${0.8 + cardProgress * 0.2})`,
-      pointerEvents: cardProgress > 0.5 ? 'auto' as const : 'none' as const,
-      boxShadow: cardProgress > 0 ? `0 0 40px ${companyCards[index].color}${Math.floor(cardProgress * 15).toString(16)}` : 'none',
+      opacity: 0,
+      transform: 'translateY(40px)',
+      pointerEvents: 'none' as const,
     }
   }
 
   return (
     <>
-      <div ref={containerRef} className="relative bg-[#0a0a0b]" style={{ height: '550dvh' }}>
-        <div className={`sticky top-0 flex items-center justify-center overflow-hidden px-3 sm:px-6`} style={{ height: '100dvh', maxHeight: '-webkit-fill-available' }}>
+      <div ref={containerRef} className="relative bg-[#0a0a0b]" style={{ height: '1500dvh' }}>
+        <div className={`sticky top-0 flex items-center justify-center overflow-hidden px-4 sm:px-6`} style={{ height: '100dvh', maxHeight: '-webkit-fill-available' }}>
           
-          {/* Background effects */}
-          {!isHero && !isCTA && (
+          {isShowingSection && (
             <div 
               className="absolute inset-0 transition-all duration-1000"
               style={{ background: currentSection.background }}
             />
           )}
 
-          {(isHero || isCTA) && (
+          {!isShowingSection && (
             <div
               className="absolute inset-0 transition-all duration-1000"
               style={{
@@ -859,333 +1001,364 @@ export default function NexGenPage() {
             />
           )}
           
-          {/* Hero Section */}
-          <div className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ${
-            isHero ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
-          }`}>
-            <div className="text-center max-w-6xl mx-auto px-3 sm:px-6 w-full pb-safe-bottom">
-              {/* NXG Group Brand */}
-              <div className="mb-6 sm:mb-8 md:mb-12">
-                <div className="inline-flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                  <div className="w-6 sm:w-12 h-px bg-white/20" />
-                  <span className="text-[8px] sm:text-xs font-medium text-gray-500 uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+          <div className="w-full max-w-7xl mx-auto flex flex-col items-center justify-center min-h-[90vh]">
+            
+            {/* Hero Section - Everything blurs together */}
+            {isHero && (
+              <div 
+                className="text-center animate-fadeIn w-full transition-all duration-700 flex flex-col items-center justify-center"
+                style={{
+                  filter: `blur(${blurAmount}px)`,
+                  opacity: opacityAmount,
+                  transform: `translateY(${translateAmount}px)`,
+                  minHeight: '100%',
+                }}
+              >
+                <div className="inline-flex items-center gap-3 mb-4">
+                  <div className="w-8 sm:w-12 h-px bg-white/20" />
+                  <span className="text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-[0.3em]">
                     NexGen Group of Company
                   </span>
-                  <div className="w-6 sm:w-12 h-px bg-white/20" />
+                  <div className="w-8 sm:w-12 h-px bg-white/20" />
                 </div>
                 
-                <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-9xl font-bold text-white mb-3 sm:mb-4 leading-none tracking-tighter flex flex-wrap items-center justify-center gap-x-1 sm:gap-x-2 gap-y-1">
+                <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-bold text-white mb-4 leading-none tracking-tighter flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
                   <span>NXG</span>
                   <span className="text-gray-600 font-light">GROUP</span>
                 </h1>
                 
-                <p className="text-gray-400 text-[10px] sm:text-sm md:text-lg max-w-2xl mx-auto leading-relaxed mt-2 sm:mt-4 px-2">
+                <p className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mt-4 px-2">
                   Three specialized divisions, one unified mission delivering 
                   exceptional digital solutions that transform businesses and empower individuals.
                 </p>
-              </div>
 
-              {/* 3 Company Cards - Mobile optimized */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 lg:gap-6 max-w-4xl mx-auto mt-4 sm:mt-8 md:mt-12">
-                {companyCards.map((company, index) => {
-                  const style = getCardStyle(index)
-                  
-                  return (
-                    <Link
-                      key={company.id}
-                      to={`/${company.id}`}
-                      className="group relative bg-[#0a0a0b] border border-white/[0.06] rounded-xl sm:rounded-2xl p-3.5 sm:p-6 lg:p-8 transition-all duration-700 hover:border-white/[0.15]"
-                      style={{
-                        ...style,
-                        transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
-                      }}
-                    >
-                      {/* Hover glow effect */}
-                      <div 
-                        className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                {/* Single Card */}
+                <div className="max-w-sm mx-auto mt-8 sm:mt-12 transition-all duration-700 min-h-[400px] w-full flex items-center justify-center">
+                  {heroLoop >= 0 && heroLoop < companyCards.length && (() => {
+                    const company = companyCards[heroLoop]
+                    const style = getCardStyle(heroLoop)
+
+                    return (
+                      <Link
+                        key={company.id}
+                        to={`/${company.id}`}
+                        className="group relative bg-[#0a0a0b] border border-white/[0.06] rounded-2xl p-5 sm:p-6 lg:p-8 transition-all duration-700 hover:border-white/[0.15] w-full overflow-hidden"
+                        style={style}
+                      >
+                        <div 
+                          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                          style={{
+                            background: `radial-gradient(circle at center, ${company.color}10 0%, transparent 70%)`,
+                          }}
+                        />
+                        
+                        <div className="relative z-10">
+                          <div 
+                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-3 sm:mb-4 transition-all duration-500 group-hover:scale-110"
+                            style={{ 
+                              backgroundColor: `${company.color}15`,
+                              color: company.color,
+                            }}
+                          >
+                            {company.icon}
+                          </div>
+                          
+                          <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1 sm:mb-2">
+                            {company.name}
+                          </h3>
+                          
+                          <p className="text-xs sm:text-sm font-medium mb-2"
+                            style={{ color: company.color }}
+                          >
+                            {company.tagline}
+                          </p>
+                          
+                          <p className="text-gray-500 text-xs sm:text-sm leading-relaxed mb-4">
+                            {company.description}
+                          </p>
+                          
+                          <div className="flex items-center gap-2 text-xs sm:text-sm font-medium transition-all duration-300 opacity-50 group-hover:opacity-100"
+                            style={{ color: company.color }}
+                          >
+                            <span>Explore</span>
+                            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" />
+                          </div>
+                        </div>
+                      </Link>
+                    )
+                  })()}
+                </div>
+
+                {/* Progress dots - these also blur */}
+                <div className="flex items-center justify-center gap-2 mt-6 sm:mt-8">
+                  {companyCards.map((company, index) => {
+                    const isRevealed =
+                      index < heroLoop || (index === heroLoop && heroProgress > 0.1)
+                    
+                    return (
+                      <div
+                        key={index}
+                        className="transition-all duration-500 rounded-full"
                         style={{
-                          background: `radial-gradient(circle at center, ${company.color}10 0%, transparent 70%)`,
+                          width: isRevealed ? '20px' : '6px',
+                          height: '6px',
+                          backgroundColor: isRevealed ? company.color : '#333',
+                          opacity: isRevealed ? 1 : 0.3,
                         }}
                       />
-                      
-                      <div className="relative z-10">
-                        {/* Icon */}
-                        <div 
-                          className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-2 sm:mb-4 transition-all duration-500 group-hover:scale-110"
-                          style={{ 
-                            backgroundColor: `${company.color}15`,
-                            color: company.color,
-                          }}
-                        >
-                          {company.icon}
-                        </div>
-                        
-                        {/* Company Name */}
-                        <h3 className="text-sm sm:text-xl lg:text-2xl font-bold text-white mb-0.5 sm:mb-2 transition-colors duration-300">
-                          {company.name}
-                        </h3>
-                        
-                        {/* Tagline */}
-                        <p className="text-[9px] sm:text-sm font-medium mb-1 sm:mb-2 transition-colors duration-300"
-                          style={{ color: company.color }}
-                        >
-                          {company.tagline}
-                        </p>
-                        
-                        {/* Description - shorter on mobile */}
-                        <p className="text-gray-500 text-[9px] sm:text-sm leading-relaxed mb-2 sm:mb-4 line-clamp-2 sm:line-clamp-none">
-                          {company.description}
-                        </p>
-                        
-                        {/* Arrow indicator */}
-                        <div className="flex items-center gap-1.5 sm:gap-2 text-[9px] sm:text-sm font-medium transition-all duration-300 opacity-50 group-hover:opacity-100"
-                          style={{ color: company.color }}
-                        >
-                          <span>Explore</span>
-                          <ArrowRight className="w-2.5 h-2.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" />
-                        </div>
-                      </div>
-                    </Link>
-                  )
-                })}
-              </div>
-
-              {/* Progress indicator dots */}
-              <div className="flex items-center justify-center gap-2 mt-6 sm:mt-8 md:mt-12">
-                {companyCards.map((company, index) => {
-                  const cardStart = index * 0.25
-                  const cardEnd = cardStart + 0.25
-                  const isRevealed = heroProgress > cardStart
-                  const isFullyRevealed = heroProgress > cardEnd
-                  
-                  return (
-                    <div
-                      key={index}
-                      className="transition-all duration-500 rounded-full"
-                      style={{
-                        width: isRevealed ? (isFullyRevealed ? '16px sm:24px' : '10px sm:16px') : '4px sm:6px',
-                        height: '4px sm:6px',
-                        backgroundColor: isRevealed ? company.color : '#333',
-                        opacity: isRevealed ? 1 : 0.4,
-                      }}
-                    />
-                  )
-                })}
-              </div>
-            </div>
-
-            {/* Scroll Indicator */}
-            <div 
-              className="absolute bottom-4 sm:bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 sm:gap-3 transition-all duration-700"
-              style={{
-                opacity: heroProgress > 0.8 ? 0 : 1,
-                transform: `translateY(${heroProgress > 0.8 ? 20 : 0}px)`,
-                paddingBottom: 'env(safe-area-inset-bottom)',
-              }}
-            >
-              <span className="text-[7px] sm:text-[10px] text-gray-500 uppercase tracking-[0.15em] sm:tracking-[0.2em]">
-                Scroll to explore
-              </span>
-              
-              <div className="relative w-5 h-8 sm:w-6 sm:h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-1 sm:p-1.5">
-                <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-gradient-to-b from-emerald-400 to-sky-400 animate-scroll-bounce" />
-              </div>
-              
-              <div className="flex flex-col items-center gap-0">
-                <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600 animate-chevron-1" />
-                <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600 -mt-1.5 sm:-mt-2 animate-chevron-2" />
-                <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600 -mt-1.5 sm:-mt-2 animate-chevron-3" />
-              </div>
-            </div>
-          </div>
-
-          {/* Content Sections - Responsive Layout */}
-          <div id="content" className={`absolute inset-0 flex items-center transition-all duration-1000 ${
-            !isHero && !isCTA ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
-          }`}>
-            <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start px-4 sm:px-6 pb-safe-bottom">
-              
-              {/* Left Column - Brand Info */}
-              <div className="lg:col-span-4 flex flex-col justify-center order-1 lg:order-1">
-                {/* Logo */}
-                <div className="relative w-full mb-3 sm:mb-4" style={{ height: 'clamp(100px, 15vw, 160px)' }}>
-                  <img
-                    src={currentSection.logo}
-                    alt={currentSection.name}
-                    className="absolute inset-0 w-full h-full object-cover object-left transition-all duration-700"
-                    style={{
-                      filter: activeStep >= 0 ? 'blur(0px)' : 'blur(4px)',
-                      opacity: activeStep >= 0 ? 1 : 0.5,
-                      WebkitFilter: activeStep >= 0 ? 'blur(0px)' : 'blur(4px)',
-                    }}
-                  />
+                    )
+                  })}
                 </div>
 
-                <h3 className={`text-lg sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2 transition-all duration-500 ${currentSection.textColor}`}>
-                  {currentSection.tagline}
-                </h3>
-
-                <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mt-1 sm:mt-2 mb-4 sm:mb-6 transition-all duration-500 max-w-md">
-                  {currentSection.description}
-                </p>
-
-                <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-8" ref={ref}>
-                  {currentSection.metrics.map((m, i) => (
-                    <CountUpMetric 
-                      key={i} 
-                      value={m.value} 
-                      label={m.label} 
-                      target={m.target}
-                      inView={inView} 
-                    />
-                  ))}
-                </div>
-
-                <Link
-                  to={currentSection.linkTo}
-                  className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 text-white text-xs sm:text-sm font-medium rounded-xl transition-all duration-300 hover:opacity-90 hover:scale-105 w-fit shadow-lg group"
-                  style={{ 
-                    backgroundColor: currentSection.color,
-                    boxShadow: `0 4px 20px ${currentSection.color}40`,
-                  }}
-                >
-                  Explore {currentSection.name}
-                  <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </div>
-
-              {/* Center Column - MacBook */}
-              <div className="lg:col-span-4 flex items-center justify-center order-2 lg:order-2 mb-4 sm:mb-0">
-                <MacBookScreen section={currentSection} activeStep={activeStep} />
-              </div>
-
-              {/* Right Column - Steps/Timeline */}
-              <div className="lg:col-span-4 flex flex-col justify-center order-3 lg:order-3">
-                <div className="flex items-center justify-between mb-1 sm:mb-2 px-1">
-                  <span className="text-[8px] sm:text-[9px] text-gray-600 uppercase tracking-[0.2em]">
-                    Process Timeline
-                  </span>
-                  <span className="text-[8px] sm:text-[9px] text-gray-600 font-mono">
-                    {activeStep >= 0 ? `${activeStep + 1}/${currentSection.steps.length}` : '—'}
-                  </span>
-                </div>
-
-                {/* Desktop: Animated steps */}
-                <div className="hidden sm:flex sm:flex-col space-y-2.5">
-                  {currentSection.steps.map((step, i) => (
-                    <StepItem
-                      key={i}
-                      step={step}
-                      index={i}
-                      activeStep={activeStep}
-                      color={currentSection.color}
-                    />
-                  ))}
-                </div>
-                
-                {/* Mobile: Compact list showing all steps */}
-                <div className="flex sm:hidden flex-col space-y-1.5">
-                  {currentSection.steps.map((step, i) => (
-                    <StepItem
-                      key={i}
-                      step={step}
-                      index={i}
-                      activeStep={activeStep}
-                      color={currentSection.color}
-                    />
-                  ))}
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          {/* CTA Section */}
-          <div className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ${
-            isCTA ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
-          }`}>
-            <div className="text-center max-w-4xl mx-auto px-3 sm:px-6 w-full pb-safe-bottom">
-              <div className="mb-6 sm:mb-12">
-                <div className="inline-flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                  <div className="w-6 sm:w-12 h-px bg-white/20" />
-                  <span className="text-[8px] sm:text-xs font-medium text-gray-500 uppercase tracking-[0.2em] sm:tracking-[0.3em]">
-                    Let's Collaborate
-                  </span>
-                  <div className="w-6 sm:w-12 h-px bg-white/20" />
-                </div>
-                
-                <h2 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-3 sm:mb-4 leading-none tracking-tighter">
-                  Ready to build
-                  <br />
-                  <span className="bg-gradient-to-r from-emerald-400 via-violet-400 to-sky-400 bg-clip-text text-transparent">
-                    something great?
-                  </span>
-                </h2>
-                
-                <p className="text-gray-400 text-[10px] sm:text-sm md:text-lg max-w-2xl mx-auto leading-relaxed mt-2 sm:mt-4 px-2">
-                  Tell us about your project and we'll get back to you within 24 hours 
-                  with a tailored strategy for your success.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 lg:gap-6 max-w-4xl mx-auto mt-4 sm:mt-12">
-                {companyCards.map((company) => (
-                  <Link
-                    key={company.id}
-                    to={`/${company.id}`}
-                    className="group relative bg-[#0a0a0b] border border-white/[0.06] rounded-xl sm:rounded-2xl p-3.5 sm:p-6 lg:p-8 transition-all duration-500 hover:border-white/[0.15] hover:scale-[1.02] hover:shadow-2xl"
-                    style={{
-                      boxShadow: `0 0 40px ${company.color}05`,
-                    }}
-                  >
-                    <div 
-                      className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                      style={{
-                        background: `radial-gradient(circle at center, ${company.color}10 0%, transparent 70%)`,
-                      }}
-                    />
+                <div className="flex justify-center mt-6 sm:mt-8">
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="text-[8px] sm:text-[9px] text-gray-500 uppercase tracking-[0.2em]">
+                      Scroll to explore
+                    </span>
                     
-                    <div className="relative z-10 text-center">
-                      <div 
-                        className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center mb-2 sm:mb-4 mx-auto transition-all duration-500 group-hover:scale-110"
-                        style={{ 
-                          backgroundColor: `${company.color}15`,
-                          color: company.color,
-                        }}
-                      >
-                        {company.icon}
-                      </div>
-                      
-                      <h3 className="text-sm sm:text-xl lg:text-2xl font-bold text-white mb-0.5 sm:mb-2">
-                        {company.name}
-                      </h3>
-                      
-                      <p className="text-[9px] sm:text-sm font-medium mb-2 sm:mb-4"
-                        style={{ color: company.color }}
-                      >
-                        {company.tagline}
-                      </p>
-                      
-                      <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[9px] sm:text-sm font-medium transition-all duration-300 group-hover:scale-105"
-                        style={{ 
-                          backgroundColor: `${company.color}20`,
-                          color: company.color,
-                        }}
-                      >
-                        <span>Get Started</span>
-                        <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" />
-                      </div>
+                    <div className="relative w-5 h-8 rounded-full border-2 border-white/15 flex items-start justify-center p-1">
+                      <div className="w-1 h-1 rounded-full bg-gradient-to-b from-emerald-400 to-sky-400 animate-scroll-bounce" />
                     </div>
-                  </Link>
-                ))}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
+
+            {/* Card Display (non-hero) - Everything blurs together */}
+            {isShowingCard && !isHero && (
+              <div
+                className="transition-all duration-700 w-full flex flex-col items-center justify-center"
+                style={{
+                  filter: `blur(${blurAmount}px)`,
+                  opacity: opacityAmount,
+                  transform: `translateY(${translateAmount}px)`,
+                  minHeight: '100%',
+                }}
+              >
+                <div className="text-center mb-6 sm:mb-10">
+                  <div className="inline-flex items-center gap-3 mb-4">
+                    <div className="w-8 sm:w-12 h-px bg-white/20" />
+                    <span className="text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-[0.3em]">
+                      NexGen Group of Company
+                    </span>
+                    <div className="w-8 sm:w-12 h-px bg-white/20" />
+                  </div>
+                  
+                  <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-bold text-white mb-4 leading-none tracking-tighter flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+                    <span>NXG</span>
+                    <span className="text-gray-600 font-light">GROUP</span>
+                  </h1>
+                </div>
+
+                <div className="max-w-sm mx-auto transition-all duration-700 min-h-[400px] w-full flex items-center justify-center">
+                  {activeCardIndex >= 0 && (() => {
+                    const company = companyCards[activeCardIndex]
+                    const style = getCardStyle(activeCardIndex)
+
+                    return (
+                      <Link
+                        key={company.id}
+                        to={`/${company.id}`}
+                        className="group relative bg-[#0a0a0b] border border-white/[0.06] rounded-2xl p-5 sm:p-6 lg:p-8 transition-all duration-700 hover:border-white/[0.15] w-full overflow-hidden"
+                        style={style}
+                      >
+                        <div 
+                          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                          style={{
+                            background: `radial-gradient(circle at center, ${company.color}10 0%, transparent 70%)`,
+                          }}
+                        />
+                        
+                        <div className="relative z-10">
+                          <div 
+                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-3 sm:mb-4 transition-all duration-500 group-hover:scale-110"
+                            style={{ 
+                              backgroundColor: `${company.color}15`,
+                              color: company.color,
+                            }}
+                          >
+                            {company.icon}
+                          </div>
+                          
+                          <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1 sm:mb-2">
+                            {company.name}
+                          </h3>
+                          
+                          <p className="text-xs sm:text-sm font-medium mb-2"
+                            style={{ color: company.color }}
+                          >
+                            {company.tagline}
+                          </p>
+                          
+                          <p className="text-gray-500 text-xs sm:text-sm leading-relaxed mb-4">
+                            {company.description}
+                          </p>
+                          
+                          <div className="flex items-center gap-2 text-xs sm:text-sm font-medium transition-all duration-300 opacity-50 group-hover:opacity-100"
+                            style={{ color: company.color }}
+                          >
+                            <span>Explore</span>
+                            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" />
+                          </div>
+                        </div>
+                      </Link>
+                    )
+                  })()}
+                </div>
+
+                <div className="flex items-center justify-center gap-2 mt-4 sm:mt-6">
+                  {companyCards.map((company, index) => {
+                    const isActive = index === activeCardIndex
+                    
+                    return (
+                      <div
+                        key={index}
+                        className="transition-all duration-500 rounded-full"
+                        style={{
+                          width: isActive ? '24px' : '6px',
+                          height: '6px',
+                          backgroundColor: isActive ? company.color : '#333',
+                          opacity: isActive ? 1 : 0.3,
+                        }}
+                      />
+                    )
+                  })}
+                </div>
+
+                <div className="flex justify-center mt-4 sm:mt-6">
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="text-[8px] sm:text-[9px] text-gray-500 uppercase tracking-[0.2em]">
+                      Scroll for details
+                    </span>
+                    
+                    <div className="relative w-5 h-8 rounded-full border-2 border-white/15 flex items-start justify-center p-1">
+                      <div className="w-1 h-1 rounded-full bg-gradient-to-b from-emerald-400 to-sky-400 animate-scroll-bounce" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Section Detail View - Full screen with steps from 1 to 5 */}
+            {isShowingSection && (
+              <div
+                className="w-full animate-fadeIn transition-opacity duration-300"
+                style={{ opacity: collapseOpacity }}
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-center min-h-[70vh]">
+                  
+                  <div className="lg:col-span-4 flex flex-col justify-center">
+                    <div className="relative w-full mb-3 sm:mb-4" style={{ height: 'clamp(80px, 12vw, 130px)' }}>
+                      <img
+                        src={currentSection.logo}
+                        alt={currentSection.name}
+                        className="absolute inset-0 w-full h-full object-cover object-left transition-all duration-700"
+                        style={{
+                          filter: activeStep >= 0 ? 'blur(0px)' : 'blur(4px)',
+                          opacity: activeStep >= 0 ? 1 : 0.5,
+                          WebkitFilter: activeStep >= 0 ? 'blur(0px)' : 'blur(4px)',
+                        }}
+                      />
+                    </div>
+
+                    <h3 className={`text-lg sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2 transition-all duration-500 ${currentSection.textColor}`}>
+                      {currentSection.tagline}
+                    </h3>
+
+                    <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mt-1 sm:mt-2 mb-4 sm:mb-6 transition-all duration-500 max-w-md">
+                      {currentSection.description}
+                    </p>
+
+                    <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-8" ref={ref}>
+                      {currentSection.metrics.map((m, i) => (
+                        <CountUpMetric 
+                          key={i} 
+                          value={m.value} 
+                          label={m.label} 
+                          target={m.target}
+                          inView={inView} 
+                        />
+                      ))}
+                    </div>
+
+                    <Link
+                      to={currentSection.linkTo}
+                      className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 text-white text-xs sm:text-sm font-medium rounded-xl transition-all duration-300 hover:opacity-90 hover:scale-105 w-fit shadow-lg group"
+                      style={{ 
+                        backgroundColor: currentSection.color,
+                        boxShadow: `0 4px 20px ${currentSection.color}40`,
+                      }}
+                    >
+                      Explore {currentSection.name}
+                      <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-1" />
+                    </Link>
+                  </div>
+
+                  <div className="lg:col-span-4 flex items-center justify-center mb-4 sm:mb-0">
+                    <MacBookScreen section={currentSection} activeStep={activeStep} />
+                  </div>
+
+                  <div className="lg:col-span-4 flex flex-col justify-center">
+                    <div className="flex items-center justify-between mb-1 sm:mb-2 px-1">
+                      <span className="text-[8px] sm:text-[9px] text-gray-600 uppercase tracking-[0.2em]">
+                        Process Timeline
+                      </span>
+                      <span className="text-[8px] sm:text-[9px] text-gray-600 font-mono">
+                        {activeStep >= 0 ? `${activeStep + 1}/${currentSection.steps.length}` : '—'}
+                      </span>
+                    </div>
+
+                    <div className="hidden sm:flex sm:flex-col space-y-2.5">
+                      {currentSection.steps.map((step, i) => (
+                        <StepItem
+                          key={i}
+                          step={step}
+                          index={i}
+                          activeStep={activeStep}
+                          color={currentSection.color}
+                        />
+                      ))}
+                    </div>
+                    
+                    <div className="flex sm:hidden flex-col space-y-1.5">
+                      {currentSection.steps.map((step, i) => (
+                        <StepItem
+                          key={i}
+                          step={step}
+                          index={i}
+                          activeStep={activeStep}
+                          color={currentSection.color}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+
+                <div className="flex justify-center mt-6 sm:mt-8">
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="text-[8px] sm:text-[9px] text-gray-500 uppercase tracking-[0.2em]">
+                      {activeStep === currentSection.steps.length - 1 ? 'Section complete — scrolling up...' : 'Keep scrolling...'}
+                    </span>
+                    
+                    <div className="relative w-5 h-8 rounded-full border-2 border-white/15 flex items-start justify-center p-1">
+                      <div className="w-1 h-1 rounded-full bg-gradient-to-b from-emerald-400 to-sky-400 animate-scroll-bounce" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
           </div>
 
         </div>
       </div>
 
       <style>{`
+        html {
+          scroll-behavior: smooth;
+        }
+
         body {
           background: #0a0a0b;
           overflow-x: hidden;
@@ -1194,18 +1367,42 @@ export default function NexGenPage() {
           padding-bottom: env(safe-area-inset-bottom);
         }
 
+        /* Coloured scrollbar — Firefox */
+        html {
+          scrollbar-width: thin;
+          scrollbar-color: #10b981 #0a0a0b;
+        }
+
+        /* Coloured scrollbar — WebKit (Chrome, Safari, Edge) */
+        ::-webkit-scrollbar {
+          width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: #0a0a0b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: linear-gradient(180deg, #10b981 0%, #8b5cf6 50%, #0ea5e9 100%);
+          border-radius: 999px;
+          border: 2px solid #0a0a0b;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(180deg, #34d399 0%, #a78bfa 50%, #38bdf8 100%);
+        }
+
         .pb-safe-bottom {
           padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* Bouncing dot animation */
         @keyframes scroll-bounce {
           0%, 100% { 
             transform: translateY(0); 
             opacity: 0.4; 
           }
           50% { 
-            transform: translateY(20px); 
+            transform: translateY(12px); 
             opacity: 1; 
           }
         }
@@ -1216,7 +1413,7 @@ export default function NexGenPage() {
             opacity: 0.4; 
           }
           50% { 
-            -webkit-transform: translateY(20px); 
+            -webkit-transform: translateY(12px); 
             opacity: 1; 
           }
         }
@@ -1226,28 +1423,13 @@ export default function NexGenPage() {
           -webkit-animation: scroll-bounce 2s ease-in-out infinite;
         }
 
-        /* Cascading chevron animations */
-        @keyframes chevron-fade {
-          0%, 100% { opacity: 0.2; transform: translateY(0); }
-          50% { opacity: 0.6; transform: translateY(4px); }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
-        @-webkit-keyframes chevron-fade {
-          0%, 100% { opacity: 0.2; -webkit-transform: translateY(0); }
-          50% { opacity: 0.6; -webkit-transform: translateY(4px); }
-        }
-
-        .animate-chevron-1 {
-          animation: chevron-fade 2s ease-in-out infinite;
-          -webkit-animation: chevron-fade 2s ease-in-out infinite;
-        }
-        .animate-chevron-2 {
-          animation: chevron-fade 2s ease-in-out infinite 0.2s;
-          -webkit-animation: chevron-fade 2s ease-in-out infinite 0.2s;
-        }
-        .animate-chevron-3 {
-          animation: chevron-fade 2s ease-in-out infinite 0.4s;
-          -webkit-animation: chevron-fade 2s ease-in-out infinite 0.4s;
+        .animate-fadeIn {
+          animation: fadeIn 0.8s ease-out forwards;
         }
 
         @keyframes pulse {
@@ -1269,21 +1451,6 @@ export default function NexGenPage() {
           [style*="height: 100dvh"] {
             height: -webkit-fill-available;
           }
-        }
-
-        .line-clamp-2 {
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-
-        .delay-500 {
-          animation-delay: 500ms;
-        }
-
-        .delay-1000 {
-          animation-delay: 1000ms;
         }
       `}</style>
     </>
