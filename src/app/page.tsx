@@ -864,7 +864,7 @@ export default function NexGenPage() {
             isHero ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
           }`}>
             <div className="text-center max-w-6xl mx-auto px-4 sm:px-6 w-full pb-safe-bottom">
-              {/* NXG Group Brand - Always visible by default */}
+              {/* NXG Group Brand - Fixed for mobile */}
               <div className="mb-8 sm:mb-12">
                 <div className="inline-flex items-center gap-3 mb-4">
                   <div className="w-8 sm:w-12 h-px bg-white/20" />
@@ -874,12 +874,12 @@ export default function NexGenPage() {
                   <div className="w-8 sm:w-12 h-px bg-white/20" />
                 </div>
                 
-                <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-white mb-4 leading-none tracking-tighter">
-                  NXG
-                  <span className="text-gray-600 font-light ml-2 sm:ml-3">GROUP</span>
+                <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-bold text-white mb-4 leading-none tracking-tighter flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+                  <span>NXG</span>
+                  <span className="text-gray-600 font-light">GROUP</span>
                 </h1>
                 
-                <p className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mt-4">
+                <p className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mt-4 px-2">
                   Three specialized divisions, one unified mission delivering 
                   exceptional digital solutions that transform businesses and empower individuals.
                 </p>
