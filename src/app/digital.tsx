@@ -5,8 +5,8 @@ import { ArrowLeft, ChevronLeft, ChevronRight, X, ExternalLink } from 'lucide-re
 // ============================================================
 // CONFIGURATION - Change this to your desired company name
 // ============================================================
-const COMPANY_NAME = "Nexgen Digital"  // ← Changed to Nextgen Digital
-const COMPANY_LOGO_PATH = "/nextgendigital.png"  // ← Logo path
+const COMPANY_NAME = "Nexgen Digital"  // ← Changed to Nexgen Digital
+const COMPANY_LOGO_PATH = "/nexgendigital.png"  // ← Logo path (updated to nex)
 
 // ============================================================
 // CONTACT MESSAGE - Message to be sent via WhatsApp
@@ -183,7 +183,7 @@ export default function DigitalPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#0a0a0b] text-white relative overflow-hidden">
+    <div className="min-h-screen bg-[#0a0a0b] text-white relative overflow-hidden" style={{ minHeight: '100dvh' }}>
       {/* Background Gradient - Violet theme */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute inset-0" style={{
@@ -201,7 +201,7 @@ export default function DigitalPage() {
       </Link>
 
       {/* Main Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 py-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 py-20 pb-safe-bottom">
         
         {/* Hero Section with Logo */}
         <div className="flex flex-col items-center w-full mb-16">
@@ -213,6 +213,9 @@ export default function DigitalPage() {
                   alt={COMPANY_NAME}
                   className="absolute inset-0 w-full h-full object-cover object-center"
                   onError={() => setLogoError(true)}
+                  style={{
+                    WebkitFilter: 'none',
+                  }}
                 />
               </div>
             ) : (
@@ -283,6 +286,9 @@ export default function DigitalPage() {
                     alt={projects[currentSlide].title}
                     className="w-full h-full object-contain p-2 cursor-pointer"
                     onClick={() => openFullscreen(projects[currentSlide].image)}
+                    style={{
+                      WebkitFilter: 'none',
+                    }}
                   />
                   
                   <button onClick={(e) => { e.stopPropagation(); prevSlide(); }} className="absolute left-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/50 text-white/70 hover:text-white hover:bg-black/70 transition-all duration-300 backdrop-blur-sm">
@@ -320,6 +326,9 @@ export default function DigitalPage() {
                 alt={project.title}
                 className="w-full h-full object-cover"
                 onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.png' }}
+                style={{
+                  WebkitFilter: 'none',
+                }}
               />
             </button>
           ))}
@@ -455,6 +464,9 @@ export default function DigitalPage() {
                       alt={project.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.png' }}
+                      style={{
+                        WebkitFilter: 'none',
+                      }}
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
                       <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-medium">
@@ -530,6 +542,9 @@ export default function DigitalPage() {
             alt="Fullscreen view"
             className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
             onClick={(e) => e.stopPropagation()}
+            style={{
+              WebkitFilter: 'none',
+            }}
           />
         </div>
       )}
@@ -539,6 +554,23 @@ export default function DigitalPage() {
           background: #0a0a0b;
           overflow-x: hidden;
           -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .pb-safe-bottom {
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        @supports (-webkit-touch-callout: none) {
+          .sticky {
+            position: -webkit-sticky;
+            position: sticky;
+          }
+          
+          [style*="min-height: 100dvh"] {
+            min-height: -webkit-fill-available;
+          }
         }
       `}</style>
     </div>

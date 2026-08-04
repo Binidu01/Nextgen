@@ -6,7 +6,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, X } from 'lucide-react'
 // CONFIGURATION - Change this to your desired company name
 // ============================================================
 const COMPANY_NAME = "NexGen Edu"  // ← CHANGE THIS TO YOUR DESIRED NAME
-const COMPANY_LOGO_PATH = "/nextgenedu.png"  // ← Update logo path if needed
+const COMPANY_LOGO_PATH = "/nexgenedu.png"  // ← Update logo path if needed
 
 // ============================================================
 // CONTACT MESSAGE - Message to be sent via WhatsApp
@@ -195,7 +195,7 @@ export default function EduPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#0a0a0b] text-white relative overflow-hidden">
+    <div className="min-h-screen bg-[#0a0a0b] text-white relative overflow-hidden" style={{ minHeight: '100dvh' }}>
       {/* Background Gradient - Sky blue theme */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute inset-0" style={{
@@ -213,7 +213,7 @@ export default function EduPage() {
       </Link>
 
       {/* Main Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 py-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 py-20 pb-safe-bottom">
         
         {/* Hero Section with Logo */}
         <div className="flex flex-col items-center w-full mb-16">
@@ -225,6 +225,9 @@ export default function EduPage() {
                   alt={COMPANY_NAME}
                   className="absolute inset-0 w-full h-full object-cover object-center"
                   onError={() => setLogoError(true)}
+                  style={{
+                    WebkitFilter: 'none',
+                  }}
                 />
               </div>
             ) : (
@@ -246,7 +249,7 @@ export default function EduPage() {
           </p>
         </div>
 
-        {/* MacBook Section - Educational visual display */}
+        {/* MacBook Section - Fixed with smaller inside content */}
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 mb-20">
           {/* Left side - Brand info */}
           <div className="flex-1">
@@ -286,67 +289,82 @@ export default function EduPage() {
             </button>
           </div>
 
-          {/* Right side - MacBook with Educational Visuals */}
+          {/* Right side - MacBook with FIXED SIZE and SMALLER inside content */}
           <div className="flex-1 flex justify-center">
-            <div className="relative w-full max-w-sm">
+            <div className="w-[320px] sm:w-[400px] md:w-[480px]">
               <div className="relative bg-gradient-to-b from-[#1a1a1e] to-[#0a0a0b] rounded-xl border border-white/10 shadow-2xl overflow-hidden">
                 <div className="relative aspect-[16/10] m-[5px] rounded-lg overflow-hidden bg-[#0a0a0b]">
                   {/* Educational content display */}
-                  <div className="w-full h-full bg-gradient-to-br from-[#0a0a0b] to-[#1a1a1e] rounded-lg p-4 flex flex-col items-center justify-center relative">
+                  <div className="w-full h-full bg-gradient-to-br from-[#0a0a0b] to-[#1a1a1e] rounded-lg p-3 sm:p-4 flex flex-col items-center justify-center relative">
                     <div className="absolute inset-0 opacity-10">
                       <div className="absolute bottom-0 left-0 w-full h-full" style={{
                         backgroundImage: 'radial-gradient(circle at 50% 80%, #0ea5e9 0%, transparent 50%)',
                       }} />
                     </div>
                     
-                    <div className="relative z-10 text-center w-full space-y-3">
-                      {/* Icon */}
+                    <div className="relative z-10 text-center w-full space-y-2 sm:space-y-3">
+                      {/* Icon - Smaller */}
                       <div className="flex items-center justify-center">
-                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
-                          <svg className="w-6 h-6 sm:w-7 sm:h-7 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
+                          <svg className="w-5 h-5 sm:w-6 sm:h-6 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                           </svg>
                         </div>
                       </div>
                       
-                      <h3 className="text-white text-base sm:text-lg font-bold">{eduVisuals[currentSlide].title}</h3>
-                      <p className="text-sky-400 text-xs sm:text-sm">{eduVisuals[currentSlide].subtitle}</p>
+                      {/* Title - Smaller */}
+                      <h3 className="text-white text-sm sm:text-base font-bold leading-tight">
+                        {eduVisuals[currentSlide].title}
+                      </h3>
                       
-                      {/* Progress bars */}
-                      <div className="space-y-2 max-w-[200px] mx-auto">
+                      {/* Subtitle - Smaller */}
+                      <p className="text-sky-400 text-xs sm:text-sm font-medium">
+                        {eduVisuals[currentSlide].subtitle}
+                      </p>
+                      
+                      {/* Progress bars - Smaller */}
+                      <div className="space-y-1.5 sm:space-y-2 max-w-[200px] sm:max-w-[220px] mx-auto">
                         <div className="flex items-center gap-2">
-                          <span className="text-[8px] text-gray-500 w-16">Quality</span>
-                          <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                          <span className="text-[8px] sm:text-[9px] text-gray-400 font-medium w-12 sm:w-14 text-right">Quality</span>
+                          <div className="flex-1 h-1.5 sm:h-2 bg-white/10 rounded-full overflow-hidden">
                             <div className="h-full bg-sky-400 rounded-full" style={{ width: '98%' }} />
                           </div>
-                          <span className="text-[8px] text-sky-400">98%</span>
+                          <span className="text-[8px] sm:text-[9px] text-sky-400 font-mono">98%</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-[8px] text-gray-500 w-16">Original</span>
-                          <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                          <span className="text-[8px] sm:text-[9px] text-gray-400 font-medium w-12 sm:w-14 text-right">Original</span>
+                          <div className="flex-1 h-1.5 sm:h-2 bg-white/10 rounded-full overflow-hidden">
                             <div className="h-full bg-sky-400 rounded-full" style={{ width: '100%' }} />
                           </div>
-                          <span className="text-[8px] text-sky-400">100%</span>
+                          <span className="text-[8px] sm:text-[9px] text-sky-400 font-mono">100%</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-[8px] text-gray-500 w-16">On Time</span>
-                          <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                          <span className="text-[8px] sm:text-[9px] text-gray-400 font-medium w-12 sm:w-14 text-right">On Time</span>
+                          <div className="flex-1 h-1.5 sm:h-2 bg-white/10 rounded-full overflow-hidden">
                             <div className="h-full bg-sky-400 rounded-full" style={{ width: '99%' }} />
                           </div>
-                          <span className="text-[8px] text-sky-400">99%</span>
+                          <span className="text-[8px] sm:text-[9px] text-sky-400 font-mono">99%</span>
                         </div>
                       </div>
                     </div>
                   </div>
                   
-                  <button onClick={(e) => { e.stopPropagation(); prevSlide(); }} className="absolute left-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/50 text-white/70 hover:text-white hover:bg-black/70 transition-all duration-300 backdrop-blur-sm">
-                    <ChevronLeft className="w-4 h-4" />
+                  {/* Navigation Buttons */}
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); prevSlide(); }} 
+                    className="absolute left-1.5 sm:left-2 top-1/2 -translate-y-1/2 p-1.5 sm:p-2 rounded-full bg-black/60 text-white/80 hover:text-white hover:bg-black/80 transition-all duration-300 backdrop-blur-sm border border-white/10"
+                  >
+                    <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
-                  <button onClick={(e) => { e.stopPropagation(); nextSlide(); }} className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/50 text-white/70 hover:text-white hover:bg-black/70 transition-all duration-300 backdrop-blur-sm">
-                    <ChevronRight className="w-4 h-4" />
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); nextSlide(); }} 
+                    className="absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 p-1.5 sm:p-2 rounded-full bg-black/60 text-white/80 hover:text-white hover:bg-black/80 transition-all duration-300 backdrop-blur-sm border border-white/10"
+                  >
+                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
 
-                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-black/50 text-white/70 text-[10px] backdrop-blur-sm">
+                  {/* Slide Counter */}
+                  <div className="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full bg-black/60 text-white/80 text-[8px] sm:text-xs font-medium backdrop-blur-sm border border-white/10">
                     {currentSlide + 1} / {eduVisuals.length}
                   </div>
                 </div>
@@ -548,6 +566,23 @@ export default function EduPage() {
           background: #0a0a0b;
           overflow-x: hidden;
           -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .pb-safe-bottom {
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        @supports (-webkit-touch-callout: none) {
+          .sticky {
+            position: -webkit-sticky;
+            position: sticky;
+          }
+          
+          [style*="min-height: 100dvh"] {
+            min-height: -webkit-fill-available;
+          }
         }
       `}</style>
     </div>

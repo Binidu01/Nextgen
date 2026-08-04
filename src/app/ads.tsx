@@ -6,7 +6,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, X } from 'lucide-react'
 // CONFIGURATION - Change this to your desired company name
 // ============================================================
 const COMPANY_NAME = "Nexgen Ads"  // ← Changed to Nexgen Ads
-const COMPANY_LOGO_PATH = "/nextgenads.png"  // ← Logo path
+const COMPANY_LOGO_PATH = "/nexgenads.png"  // ← Logo path (updated to nex)
 
 // ============================================================
 // CONTACT MESSAGE - Message to be sent via WhatsApp
@@ -201,7 +201,7 @@ export default function AdsPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#0a0a0b] text-white relative overflow-hidden">
+    <div className="min-h-screen bg-[#0a0a0b] text-white relative overflow-hidden" style={{ minHeight: '100dvh' }}>
       {/* Background Gradient - Same as main page */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute inset-0" style={{
@@ -219,7 +219,7 @@ export default function AdsPage() {
       </Link>
 
       {/* Main Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 py-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 py-20 pb-safe-bottom">
         
         {/* Hero Section with Logo */}
         <div className="flex flex-col items-center w-full mb-16">
@@ -231,6 +231,9 @@ export default function AdsPage() {
                   alt={COMPANY_NAME}
                   className="absolute inset-0 w-full h-full object-cover object-center"
                   onError={() => setLogoError(true)}
+                  style={{
+                    WebkitFilter: 'none',
+                  }}
                 />
               </div>
             ) : (
@@ -304,6 +307,9 @@ export default function AdsPage() {
                     alt={`Ad Post ${currentSlide + 1}`}
                     className="w-full h-full object-contain p-2 cursor-pointer"
                     onClick={() => openFullscreen(adImages[currentSlide])}
+                    style={{
+                      WebkitFilter: 'none',
+                    }}
                   />
                   
                   {/* Navigation Arrows */}
@@ -355,6 +361,9 @@ export default function AdsPage() {
                 onError={(e) => {
                   const target = e.target as HTMLImageElement
                   target.src = '/placeholder.png'
+                }}
+                style={{
+                  WebkitFilter: 'none',
                 }}
               />
             </button>
@@ -492,6 +501,9 @@ export default function AdsPage() {
             alt="Fullscreen view"
             className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
             onClick={(e) => e.stopPropagation()}
+            style={{
+              WebkitFilter: 'none',
+            }}
           />
         </div>
       )}
@@ -501,6 +513,23 @@ export default function AdsPage() {
           background: #0a0a0b;
           overflow-x: hidden;
           -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .pb-safe-bottom {
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        @supports (-webkit-touch-callout: none) {
+          .sticky {
+            position: -webkit-sticky;
+            position: sticky;
+          }
+          
+          [style*="min-height: 100dvh"] {
+            min-height: -webkit-fill-available;
+          }
         }
       `}</style>
     </div>

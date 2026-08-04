@@ -67,6 +67,7 @@ function SimpleIcon({ icon, size = 16 }: { icon: { path: string }; size?: number
       viewBox="0 0 24 24"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
+      style={{ display: 'block' }}
     >
       <path d={icon.path} />
     </svg>
@@ -110,6 +111,8 @@ function AdsScreen({ activeStep }: { activeStep: number }) {
     },
   ]
 
+  const safeActiveStep = Math.max(0, Math.min(activeStep, screens.length - 1))
+
   return (
     <div className="w-full h-full bg-gradient-to-br from-[#0a0a0b] to-[#1a1a1e] rounded-xl overflow-hidden p-3 sm:p-4 flex flex-col items-center justify-center relative">
       <div className="absolute inset-0 opacity-10">
@@ -120,26 +123,26 @@ function AdsScreen({ activeStep }: { activeStep: number }) {
       </div>
       
       <div className="relative z-10 text-center w-full">
-        {activeStep >= 0 && activeStep < screens.length && (
+        {safeActiveStep >= 0 && safeActiveStep < screens.length && (
           <div className="transform transition-all duration-700 space-y-2 sm:space-y-3">
             <div className="flex items-center justify-center gap-2 sm:gap-3">
-              <div className="text-2xl sm:text-3xl" style={{ color: screens[activeStep].color }}>
-                {screens[activeStep].icon}
+              <div className="text-2xl sm:text-3xl" style={{ color: screens[safeActiveStep].color }}>
+                {screens[safeActiveStep].icon}
               </div>
-              <h3 className="text-white text-sm sm:text-lg font-bold">{screens[activeStep].label}</h3>
+              <h3 className="text-white text-sm sm:text-lg font-bold">{screens[safeActiveStep].label}</h3>
             </div>
             
             <div className="grid grid-cols-3 gap-1.5 sm:gap-2 max-w-[240px] sm:max-w-xs mx-auto">
               <div className="bg-white/5 rounded-lg p-1.5 sm:p-2">
-                <div className="text-white text-xs sm:text-sm font-mono">{screens[activeStep].metrics.clicks}</div>
+                <div className="text-white text-xs sm:text-sm font-mono">{screens[safeActiveStep].metrics.clicks}</div>
                 <div className="text-[7px] sm:text-[8px] text-gray-500 uppercase tracking-wider">Clicks</div>
               </div>
               <div className="bg-white/5 rounded-lg p-1.5 sm:p-2">
-                <div className="text-white text-xs sm:text-sm font-mono">{screens[activeStep].metrics.ctr}</div>
+                <div className="text-white text-xs sm:text-sm font-mono">{screens[safeActiveStep].metrics.ctr}</div>
                 <div className="text-[7px] sm:text-[8px] text-gray-500 uppercase tracking-wider">CTR</div>
               </div>
               <div className="bg-white/5 rounded-lg p-1.5 sm:p-2">
-                <div className="text-white text-xs sm:text-sm font-mono">{screens[activeStep].metrics.roas}</div>
+                <div className="text-white text-xs sm:text-sm font-mono">{screens[safeActiveStep].metrics.roas}</div>
                 <div className="text-[7px] sm:text-[8px] text-gray-500 uppercase tracking-wider">ROAS</div>
               </div>
             </div>
@@ -184,6 +187,8 @@ function DigitalScreen({ activeStep }: { activeStep: number }) {
     },
   ]
 
+  const safeActiveStep = Math.max(0, Math.min(activeStep, screens.length - 1))
+
   return (
     <div className="w-full h-full bg-gradient-to-br from-[#0a0a0b] to-[#1a1a1e] rounded-xl overflow-hidden p-3 sm:p-4 flex flex-col items-center justify-center relative">
       <div className="absolute inset-0 opacity-10">
@@ -194,26 +199,26 @@ function DigitalScreen({ activeStep }: { activeStep: number }) {
       </div>
       
       <div className="relative z-10 text-center w-full">
-        {activeStep >= 0 && activeStep < screens.length && (
+        {safeActiveStep >= 0 && safeActiveStep < screens.length && (
           <div className="transform transition-all duration-700 space-y-2 sm:space-y-3">
             <div className="flex items-center justify-center gap-2 sm:gap-3">
-              <div className="text-2xl sm:text-3xl" style={{ color: screens[activeStep].color }}>
-                {screens[activeStep].icon}
+              <div className="text-2xl sm:text-3xl" style={{ color: screens[safeActiveStep].color }}>
+                {screens[safeActiveStep].icon}
               </div>
-              <h3 className="text-white text-sm sm:text-lg font-bold">{screens[activeStep].label}</h3>
+              <h3 className="text-white text-sm sm:text-lg font-bold">{screens[safeActiveStep].label}</h3>
             </div>
             
             <div className="grid grid-cols-3 gap-1.5 sm:gap-2 max-w-[240px] sm:max-w-xs mx-auto">
               <div className="bg-white/5 rounded-lg p-1.5 sm:p-2">
-                <div className="text-white text-xs sm:text-sm font-mono">{screens[activeStep].metrics.files}</div>
+                <div className="text-white text-xs sm:text-sm font-mono">{screens[safeActiveStep].metrics.files}</div>
                 <div className="text-[7px] sm:text-[8px] text-gray-500 uppercase tracking-wider">Files</div>
               </div>
               <div className="bg-white/5 rounded-lg p-1.5 sm:p-2">
-                <div className="text-white text-xs sm:text-sm font-mono">{screens[activeStep].metrics.commits}</div>
+                <div className="text-white text-xs sm:text-sm font-mono">{screens[safeActiveStep].metrics.commits}</div>
                 <div className="text-[7px] sm:text-[8px] text-gray-500 uppercase tracking-wider">Commits</div>
               </div>
               <div className="bg-white/5 rounded-lg p-1.5 sm:p-2">
-                <div className="text-white text-xs sm:text-sm font-mono">{screens[activeStep].metrics.tests}</div>
+                <div className="text-white text-xs sm:text-sm font-mono">{screens[safeActiveStep].metrics.tests}</div>
                 <div className="text-[7px] sm:text-[8px] text-gray-500 uppercase tracking-wider">Coverage</div>
               </div>
             </div>
@@ -258,6 +263,8 @@ function EduScreen({ activeStep }: { activeStep: number }) {
     },
   ]
 
+  const safeActiveStep = Math.max(0, Math.min(activeStep, screens.length - 1))
+
   return (
     <div className="w-full h-full bg-gradient-to-br from-[#0a0a0b] to-[#1a1a1e] rounded-xl overflow-hidden p-3 sm:p-4 flex flex-col items-center justify-center relative">
       <div className="absolute inset-0 opacity-10">
@@ -268,26 +275,26 @@ function EduScreen({ activeStep }: { activeStep: number }) {
       </div>
       
       <div className="relative z-10 text-center w-full">
-        {activeStep >= 0 && activeStep < screens.length && (
+        {safeActiveStep >= 0 && safeActiveStep < screens.length && (
           <div className="transform transition-all duration-700 space-y-2 sm:space-y-3">
             <div className="flex items-center justify-center gap-2 sm:gap-3">
-              <div className="text-2xl sm:text-3xl" style={{ color: screens[activeStep].color }}>
-                {screens[activeStep].icon}
+              <div className="text-2xl sm:text-3xl" style={{ color: screens[safeActiveStep].color }}>
+                {screens[safeActiveStep].icon}
               </div>
-              <h3 className="text-white text-sm sm:text-lg font-bold">{screens[activeStep].label}</h3>
+              <h3 className="text-white text-sm sm:text-lg font-bold">{screens[safeActiveStep].label}</h3>
             </div>
             
             <div className="grid grid-cols-3 gap-1.5 sm:gap-2 max-w-[240px] sm:max-w-xs mx-auto">
               <div className="bg-white/5 rounded-lg p-1.5 sm:p-2">
-                <div className="text-white text-xs sm:text-sm font-mono">{screens[activeStep].metrics.words}</div>
+                <div className="text-white text-xs sm:text-sm font-mono">{screens[safeActiveStep].metrics.words}</div>
                 <div className="text-[7px] sm:text-[8px] text-gray-500 uppercase tracking-wider">Words</div>
               </div>
               <div className="bg-white/5 rounded-lg p-1.5 sm:p-2">
-                <div className="text-white text-xs sm:text-sm font-mono">{screens[activeStep].metrics.sources}</div>
+                <div className="text-white text-xs sm:text-sm font-mono">{screens[safeActiveStep].metrics.sources}</div>
                 <div className="text-[7px] sm:text-[8px] text-gray-500 uppercase tracking-wider">Sources</div>
               </div>
               <div className="bg-white/5 rounded-lg p-1.5 sm:p-2">
-                <div className="text-white text-xs sm:text-sm font-mono">{screens[activeStep].metrics.grade}</div>
+                <div className="text-white text-xs sm:text-sm font-mono">{screens[safeActiveStep].metrics.grade}</div>
                 <div className="text-[7px] sm:text-[8px] text-gray-500 uppercase tracking-wider">Grade</div>
               </div>
             </div>
@@ -318,15 +325,15 @@ function GraduationCap(props: any) {
 }
 
 // ---------------------------------------------------------------------------
-// SECTION DATA
+// SECTION DATA - Updated "Next" to "Nex"
 // ---------------------------------------------------------------------------
 const sections: SectionData[] = [
   {
     id: 'ads',
-    name: 'NextGen Ads',
+    name: 'NexGen Ads',
     tagline: 'Performance Marketing That Drives Revenue',
     description: 'Data-driven campaigns across all major platforms optimized for measurable business growth and ROI.',
-    logo: '/nextgenads.png',
+    logo: '/nexgenads.png',
     color: '#10b981',
     bgColor: 'bg-emerald-500/10',
     borderColor: 'border-emerald-500/20',
@@ -369,10 +376,10 @@ const sections: SectionData[] = [
   },
   {
     id: 'digital',
-    name: 'NextGen Digital',
+    name: 'NexGen Digital',
     tagline: 'Enterprise-Grade Software Development',
     description: 'Production-ready web applications built with modern stack technologies and enterprise-grade security.',
-    logo: '/nextgendigital.png',
+    logo: '/nexgendigital.png',
     color: '#8b5cf6',
     bgColor: 'bg-violet-500/10',
     borderColor: 'border-violet-500/20',
@@ -415,10 +422,10 @@ const sections: SectionData[] = [
   },
   {
     id: 'edu',
-    name: 'NextGen Edu',
+    name: 'NexGen Edu',
     tagline: 'Academic Support That Gets Results',
     description: 'Expert academic guidance from subject matter specialists helping students achieve their educational goals.',
-    logo: '/nextgenedu.png',
+    logo: '/nexgenedu.png',
     color: '#0ea5e9',
     bgColor: 'bg-sky-500/10',
     borderColor: 'border-sky-500/20',
@@ -611,7 +618,6 @@ function StepItem({ step, index, activeStep, color }: {
   index: number
   activeStep: number
   color: string
-  bgColor: string
 }) {
   const isActive = index === activeStep
   const isComplete = index < activeStep
@@ -749,6 +755,7 @@ function MacBookScreen({ section, activeStep }: { section: SectionData; activeSt
       className="relative w-full max-w-[280px] sm:max-w-sm mx-auto aspect-[16/10] transition-all duration-1000"
       style={{
         transform: `perspective(1000px) rotateY(${rotation}deg) scale(${scale})`,
+        WebkitTransform: `perspective(1000px) rotateY(${rotation}deg) scale(${scale})`,
       }}
     >
       <div className="relative w-full h-full bg-gradient-to-b from-[#1a1a1e] to-[#0a0a0b] rounded-xl border border-white/10 shadow-2xl overflow-hidden">
@@ -768,7 +775,7 @@ function MacBookScreen({ section, activeStep }: { section: SectionData; activeSt
 // ---------------------------------------------------------------------------
 // MAIN PAGE
 // ---------------------------------------------------------------------------
-export default function NextGenPage() {
+export default function NexGenPage() {
   const { phase, activeStep, progress, heroProgress, containerRef } = useScrollProgress()
   const currentSection = sections.find(s => s.id === phase) || sections[0]
   const isHero = phase === 'hero'
@@ -778,7 +785,7 @@ export default function NextGenPage() {
   const companyCards = [
     {
       id: 'ads',
-      name: 'NextGen Ads',
+      name: 'NexGen Ads',
       tagline: 'Performance Marketing',
       description: 'Data-driven campaigns across all major platforms optimized for measurable business growth and ROI.',
       color: '#10b981',
@@ -786,7 +793,7 @@ export default function NextGenPage() {
     },
     {
       id: 'digital',
-      name: 'NextGen Digital',
+      name: 'NexGen Digital',
       tagline: 'Software Development',
       description: 'Production-ready web applications built with modern stack technologies and enterprise-grade security.',
       color: '#8b5cf6',
@@ -794,7 +801,7 @@ export default function NextGenPage() {
     },
     {
       id: 'edu',
-      name: 'NextGen Edu',
+      name: 'NexGen Edu',
       tagline: 'Academic Excellence',
       description: 'Expert guidance from subject matter specialists helping students achieve their educational goals.',
       color: '#0ea5e9',
@@ -828,8 +835,8 @@ export default function NextGenPage() {
 
   return (
     <>
-      <div ref={containerRef} className="relative bg-[#0a0a0b]" style={{ height: '550vh' }}>
-        <div className={`sticky top-0 h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6`}>
+      <div ref={containerRef} className="relative bg-[#0a0a0b]" style={{ height: '550dvh' }}>
+        <div className={`sticky top-0 flex items-center justify-center overflow-hidden px-4 sm:px-6`} style={{ height: '100dvh', maxHeight: '-webkit-fill-available' }}>
           
           {/* Background effects */}
           {!isHero && !isCTA && (
@@ -856,13 +863,13 @@ export default function NextGenPage() {
           <div className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ${
             isHero ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
           }`}>
-            <div className="text-center max-w-6xl mx-auto px-4 sm:px-6 w-full">
+            <div className="text-center max-w-6xl mx-auto px-4 sm:px-6 w-full pb-safe-bottom">
               {/* NXG Group Brand - Always visible by default */}
               <div className="mb-8 sm:mb-12">
                 <div className="inline-flex items-center gap-3 mb-4">
                   <div className="w-8 sm:w-12 h-px bg-white/20" />
                   <span className="text-[10px] sm:text-xs font-medium text-gray-500 uppercase tracking-[0.3em]">
-                    Nexgen Group of Company
+                    NexGen Group of Company
                   </span>
                   <div className="w-8 sm:w-12 h-px bg-white/20" />
                 </div>
@@ -973,6 +980,7 @@ export default function NextGenPage() {
               style={{
                 opacity: heroProgress > 0.8 ? 0 : 1,
                 transform: `translateY(${heroProgress > 0.8 ? 20 : 0}px)`,
+                paddingBottom: 'env(safe-area-inset-bottom)',
               }}
             >
               <span className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-[0.2em]">
@@ -997,7 +1005,7 @@ export default function NextGenPage() {
           <div id="content" className={`absolute inset-0 flex items-center transition-all duration-1000 ${
             !isHero && !isCTA ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
           }`}>
-            <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start px-4 sm:px-6">
+            <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start px-4 sm:px-6 pb-safe-bottom">
               
               {/* Left Column - Brand Info */}
               <div className="lg:col-span-4 flex flex-col justify-center order-1 lg:order-1">
@@ -1010,6 +1018,7 @@ export default function NextGenPage() {
                     style={{
                       filter: activeStep >= 0 ? 'blur(0px)' : 'blur(4px)',
                       opacity: activeStep >= 0 ? 1 : 0.5,
+                      WebkitFilter: activeStep >= 0 ? 'blur(0px)' : 'blur(4px)',
                     }}
                   />
                 </div>
@@ -1072,7 +1081,6 @@ export default function NextGenPage() {
                       index={i}
                       activeStep={activeStep}
                       color={currentSection.color}
-                      bgColor={currentSection.bgColor}
                     />
                   ))}
                 </div>
@@ -1086,7 +1094,6 @@ export default function NextGenPage() {
                       index={i}
                       activeStep={activeStep}
                       color={currentSection.color}
-                      bgColor={currentSection.bgColor}
                     />
                   ))}
                 </div>
@@ -1099,7 +1106,7 @@ export default function NextGenPage() {
           <div className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ${
             isCTA ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
           }`}>
-            <div className="text-center max-w-4xl mx-auto px-4 sm:px-6 w-full">
+            <div className="text-center max-w-4xl mx-auto px-4 sm:px-6 w-full pb-safe-bottom">
               <div className="mb-8 sm:mb-12">
                 <div className="inline-flex items-center gap-3 mb-4">
                   <div className="w-8 sm:w-12 h-px bg-white/20" />
@@ -1185,6 +1192,12 @@ export default function NextGenPage() {
           background: #0a0a0b;
           overflow-x: hidden;
           -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .pb-safe-bottom {
+          padding-bottom: env(safe-area-inset-bottom);
         }
 
         /* Bouncing dot animation */
@@ -1199,8 +1212,20 @@ export default function NextGenPage() {
           }
         }
 
+        @-webkit-keyframes scroll-bounce {
+          0%, 100% { 
+            -webkit-transform: translateY(0); 
+            opacity: 0.4; 
+          }
+          50% { 
+            -webkit-transform: translateY(20px); 
+            opacity: 1; 
+          }
+        }
+
         .animate-scroll-bounce {
           animation: scroll-bounce 2s ease-in-out infinite;
+          -webkit-animation: scroll-bounce 2s ease-in-out infinite;
         }
 
         /* Cascading chevron animations */
@@ -1209,19 +1234,43 @@ export default function NextGenPage() {
           50% { opacity: 0.6; transform: translateY(4px); }
         }
 
+        @-webkit-keyframes chevron-fade {
+          0%, 100% { opacity: 0.2; -webkit-transform: translateY(0); }
+          50% { opacity: 0.6; -webkit-transform: translateY(4px); }
+        }
+
         .animate-chevron-1 {
           animation: chevron-fade 2s ease-in-out infinite;
+          -webkit-animation: chevron-fade 2s ease-in-out infinite;
         }
         .animate-chevron-2 {
           animation: chevron-fade 2s ease-in-out infinite 0.2s;
+          -webkit-animation: chevron-fade 2s ease-in-out infinite 0.2s;
         }
         .animate-chevron-3 {
           animation: chevron-fade 2s ease-in-out infinite 0.4s;
+          -webkit-animation: chevron-fade 2s ease-in-out infinite 0.4s;
         }
 
         @keyframes pulse {
           0%, 100% { opacity: 0.5; transform: scale(1); }
           50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        @-webkit-keyframes pulse {
+          0%, 100% { opacity: 0.5; -webkit-transform: scale(1); }
+          50% { opacity: 0.8; -webkit-transform: scale(1.05); }
+        }
+
+        @supports (-webkit-touch-callout: none) {
+          .sticky {
+            position: -webkit-sticky;
+            position: sticky;
+          }
+          
+          [style*="height: 100dvh"] {
+            height: -webkit-fill-available;
+          }
         }
 
         .delay-500 {
